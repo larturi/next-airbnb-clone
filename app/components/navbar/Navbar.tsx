@@ -2,7 +2,8 @@
 
 import Container from '../Container'
 import Logo from './Logo'
-import Search from '../navbar/Search'
+import Search from './Search'
+import UserMenu from './UserMenu'
 
 const Nabvar = () => {
     return (
@@ -21,6 +22,7 @@ const Nabvar = () => {
                     >
                         <Logo />
                         <Search />
+                        <UserMenu />
                     </div>
                 </Container>
             </div>
