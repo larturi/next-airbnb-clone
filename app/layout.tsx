@@ -1,6 +1,6 @@
 import './globals.css'
-
 import { Nunito } from 'next/font/google'
+import Nabvar from './components/navbar/Navbar'
 
 export const metadata = {
   title: 'Airbnb Clone',
@@ -18,7 +18,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={font.className}>{children}</body>
+      <body className={font.className}>
+        <Nabvar />
+        {children}
+      </body>
     </html>
   )
 }
