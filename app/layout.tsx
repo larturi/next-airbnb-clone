@@ -1,27 +1,34 @@
-import './globals.css'
-import { Nunito } from 'next/font/google'
-import Nabvar from './components/navbar/Navbar'
+import './globals.css';
+import { Nunito } from 'next/font/google';
+import Nabvar from './components/navbar/Navbar';
+import ClientOnly from './components/ClientOnly';
+import RegisterModal from './components/modals/RegisterModal';
+import ToastProvider from './providers/ToasterProvider';
 
 export const metadata = {
-  title: 'Airbnb Clone',
-  description: 'Airbnb Clone with Next.js 13',
-}
+   title: 'Airbnb Clone',
+   description: 'Airbnb Clone with Next.js 13',
+};
 
 const font = Nunito({
-  subsets: ['latin'],
-})
+   subsets: ['latin'],
+});
 
 export default function RootLayout({
-  children,
+   children,
 }: {
-  children: React.ReactNode
+   children: React.ReactNode;
 }) {
-  return (
-    <html lang="en">
-      <body className={font.className}>
-        <Nabvar />
-        {children}
-      </body>
-    </html>
-  )
+   return (
+      <html lang='en'>
+         <body className={font.className}>
+            <ClientOnly>
+               <ToastProvider />
+               <RegisterModal />
+               <Nabvar />
+            </ClientOnly>
+            {children}
+         </body>
+      </html>
+   );
 }
