@@ -6,11 +6,11 @@ import Avatar from '../Avatar';
 import { MenuItem } from './MenuItem';
 import useLoginModal from '@/app/hooks/useLoginModal';
 import useRegisterModal from '@/app/hooks/useRegisterModal';
-import { User } from '@prisma/client';
 import { signOut } from 'next-auth/react';
+import { SafeUser } from '@/app/types';
 
 interface UserMenuProps {
-   currentUser: User | null | undefined;
+   currentUser: SafeUser | null | undefined;
 }
 
 const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
