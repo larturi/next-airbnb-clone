@@ -2,8 +2,9 @@ import './globals.css';
 import { Nunito } from 'next/font/google';
 import Nabvar from './components/navbar/Navbar';
 import ClientOnly from './components/ClientOnly';
-import RegisterModal from './components/modals/RegisterModal';
 import ToastProvider from './providers/ToasterProvider';
+import LoginModal from './components/modals/LoginModal';
+import RegisterModal from './components/modals/RegisterModal';
 
 export const metadata = {
    title: 'Airbnb Clone',
@@ -24,6 +25,7 @@ export default function RootLayout({
          <body className={font.className}>
             <ClientOnly>
                <ToastProvider />
+               <LoginModal />
                <RegisterModal />
                <Nabvar />
             </ClientOnly>
