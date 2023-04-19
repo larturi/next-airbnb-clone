@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { signIn } from 'next-auth/react';
 import axios from 'axios';
 import { AiFillGithub } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc';
@@ -95,7 +96,7 @@ const RegisterModal = () => {
             outline
             label='Continue with GitHub'
             icon={AiFillGithub}
-            onClick={() => {}}
+            onClick={() => signIn('github')}
          />
 
          <div
