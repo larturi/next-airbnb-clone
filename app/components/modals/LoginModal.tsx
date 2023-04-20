@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { signIn } from 'next-auth/react';
-import axios from 'axios';
 import { AiFillGithub } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc';
 import { toast } from 'react-hot-toast';
@@ -11,8 +10,8 @@ import Modal from './Modal';
 import Heading from '../Heading';
 import Input from '../inputs/Input';
 import Button from '../Button';
-import useRegisterModal from '@/app/hooks/useRegisterModal';
-import useLoginModal from '@/app/hooks/useLoginModal';
+import useRegisterModal from '../../hooks/useRegisterModal';
+import useLoginModal from '../../hooks/useLoginModal';
 import { useRouter } from 'next/navigation';
 
 const LoginModal = () => {
@@ -105,7 +104,7 @@ const LoginModal = () => {
           '
          >
             <div className='flex flex-row justify-center items-center gap-2'>
-               <div>Do you do not have an account?</div>
+               <div>Do you not have an account?</div>
                <div
                   onClick={() => {
                      loginModal.onClose();
