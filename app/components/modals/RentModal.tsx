@@ -7,6 +7,7 @@ import useRentModal from '../../hooks/useRentModal';
 import Heading from '../Heading';
 import { categories } from '../../constants/categories';
 import CategoryInput from '../inputs/CategoryInput';
+import CountrySelect from '../inputs/CountrySelect';
 
 enum STEPS {
    CATEGORY = 0,
@@ -73,8 +74,8 @@ const RentModal = () => {
       },
    });
 
-   const location = watch('location');
    const category = watch('category');
+   const location = watch('location');
    const guestCount = watch('guestCount');
    const roomCount = watch('roomCount');
    const bathroomCount = watch('bathroomCount');
@@ -90,7 +91,8 @@ const RentModal = () => {
             className='
           grid 
           grid-cols-1 
-          md:grid-cols-2 
+          md:grid-cols-4
+          lg:grid-cols-5
           gap-3
           max-h-[50vh]
           overflow-y-auto
@@ -112,6 +114,21 @@ const RentModal = () => {
       </div>
    );
 
+   if (step === STEPS.LOCATION) {
+      bodyContent = (
+         <div className='flex flex-col gap-8'>
+            <Heading
+               title='Where is your place located?'
+               subtitle='Help guests find you!'
+            />
+            <CountrySelect
+               value={location}
+               onChange={(value) => setCustomValue('location', value)}
+            />
+         </div>
+      );
+   }
+
    return (
       <Modal
          title='Airbnb your home'
@@ -119,7 +136,7 @@ const RentModal = () => {
          secondaryAction={step === STEPS.CATEGORY ? undefined : onBack}
          isOpen={rentModal.isOpen}
          onClose={rentModal.onClose}
-         onSubmit={rentModal.onClose}
+         onSubmit={onNext}
          body={bodyContent}
       />
    );
