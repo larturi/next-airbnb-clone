@@ -1,7 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+
 'use client';
 
 import { useMemo, useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
+import dynamic from 'next/dynamic';
 import Modal from './Modal';
 import useRentModal from '../../hooks/useRentModal';
 import Heading from '../Heading';
@@ -81,6 +84,14 @@ const RentModal = () => {
    const bathroomCount = watch('bathroomCount');
    const imageSrc = watch('imageSrc');
 
+   const Map = useMemo(
+      () =>
+         dynamic(() => import('../Map'), {
+            ssr: false,
+         }),
+      [location]
+   );
+
    let bodyContent = (
       <div className='flex flex-col gap-8'>
          <Heading
@@ -125,6 +136,7 @@ const RentModal = () => {
                value={location}
                onChange={(value) => setCustomValue('location', value)}
             />
+            <Map center={location?.latlng} />
          </div>
       );
    }
