@@ -11,6 +11,7 @@ import Heading from '../Heading';
 import { categories } from '../../constants/categories';
 import CategoryInput from '../inputs/CategoryInput';
 import CountrySelect from '../inputs/CountrySelect';
+import Counter from '../inputs/Counter';
 
 enum STEPS {
    CATEGORY = 0,
@@ -102,8 +103,8 @@ const RentModal = () => {
             className='
           grid 
           grid-cols-1 
-          md:grid-cols-4
-          lg:grid-cols-5
+          md:grid-cols-3
+          lg:grid-cols-4
           gap-3
           max-h-[50vh]
           overflow-y-auto
@@ -137,6 +138,37 @@ const RentModal = () => {
                onChange={(value) => setCustomValue('location', value)}
             />
             <Map center={location?.latlng} />
+         </div>
+      );
+   }
+
+   if (step === STEPS.INFO) {
+      bodyContent = (
+         <div className='flex flex-col gap-8'>
+            <Heading
+               title='Share some basics about your place'
+               subtitle='What amenities do you have?'
+            />
+            <Counter
+               title='Number of guests'
+               subtitle='How many guests do you allow?'
+               value={guestCount}
+               onChange={(value) => setCustomValue('guestCount', value)}
+            />
+            <hr />
+            <Counter
+               title='Rooms'
+               subtitle='How many rooms do you have?'
+               value={roomCount}
+               onChange={(value) => setCustomValue('roomCount', value)}
+            />
+            <hr />
+            <Counter
+               title='Bathrooms'
+               subtitle='How many bathrooms do you have?'
+               value={bathroomCount}
+               onChange={(value) => setCustomValue('bathroomCount', value)}
+            />
          </div>
       );
    }
