@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { AiOutlineMenu } from 'react-icons/ai';
 import Avatar from '../Avatar';
@@ -23,6 +23,8 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
    const rentModal = useRentModal();
    const loginModal = useLoginModal();
 
+   const menuRef = useRef<HTMLDivElement>(null);
+
    const toggleOpen = useCallback(() => {
       setIsOpen((value) => !value);
    }, []);
@@ -34,8 +36,24 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
       rentModal.onOpen();
    }, [currentUser, loginModal, rentModal]);
 
+   useEffect(() => {
+      function handleClickOutside(event: MouseEvent) {
+         if (
+            menuRef.current &&
+            !menuRef.current.contains(event.target as Node)
+         ) {
+            setIsOpen(false);
+         }
+      }
+
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+         document.removeEventListener('mousedown', handleClickOutside);
+      };
+   }, [menuRef]);
+
    return (
-      <div className='relative'>
+      <div className='relative' ref={menuRef}>
          <div className='flex flex-row items-center gap-2'>
             <div
                onClick={onRent}
@@ -99,7 +117,10 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
                   {currentUser ? (
                      <>
                         <MenuItem
-                           onClick={() => router.push('/trips')}
+                           onClick={() => {
+                              setIsOpen(false);
+                              router.push('/trips');
+                           }}
                            label='Trips'
                         />
                         <MenuItem
@@ -110,7 +131,8 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
                         />
                         <MenuItem
                            onClick={() => {
-                              // registerModal.onOpen();
+                              setIsOpen(false);
+                              router.push('/reservations');
                            }}
                            label='Reservations'
                         />
@@ -121,12 +143,16 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
                            label='Properties'
                         />
                         <MenuItem
-                           onClick={rentModal.onOpen}
+                           onClick={() => {
+                              setIsOpen(false);
+                              rentModal.onOpen();
+                           }}
                            label='Airbnb My Home'
                         />
                         <hr />
                         <MenuItem
                            onClick={() => {
+                              setIsOpen(false);
                               signOut();
                            }}
                            label='Logout'
