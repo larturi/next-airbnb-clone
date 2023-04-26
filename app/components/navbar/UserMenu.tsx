@@ -125,7 +125,8 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
                         />
                         <MenuItem
                            onClick={() => {
-                              // registerModal.onOpen();
+                              setIsOpen(false);
+                              router.push('/favorites');
                            }}
                            label='Favorites'
                         />
