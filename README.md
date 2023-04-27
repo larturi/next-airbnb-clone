@@ -4,7 +4,7 @@
 
 ## Prerequisites
 
-Node version 14.x
+Node version 16.x
 
 ## Install packages
 
@@ -12,16 +12,9 @@ Node version 14.x
 npm i
 ```
 
-## Setup .env file
+## Copy the .env.template and create the .env file
 
-```bash
-DATABASE_URL=
-GOOGLE_CLIENT_ID=
-GOOGLE_CLIENT_SECRET=
-GITHUB_ID=
-GITHUB_SECRET=
-NEXTAUTH_SECRET=
-```
+#### Complete the keys of Mongo, Google, GitHub and Cloudinary
 
 ## Setup Prisma
 
