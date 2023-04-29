@@ -1,29 +1,30 @@
 'use client';
 
-import { useCallback, useState, useEffect, useRef } from 'react';
-import { useRouter } from 'next/navigation';
+import { useCallback, useState } from 'react';
 import { AiOutlineMenu } from 'react-icons/ai';
+import { signOut } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+
+import useLoginModal from '@/app/hooks/useLoginModal';
+import useRegisterModal from '@/app/hooks/useRegisterModal';
+import useRentModal from '@/app/hooks/useRentModal';
+import { SafeUser } from '@/app/types';
+
 import Avatar from '../Avatar';
 import { MenuItem } from './MenuItem';
-import useLoginModal from '../../hooks/useLoginModal';
-import useRegisterModal from '../../hooks/useRegisterModal';
-import useRentModal from '../../hooks/useRentModal';
-import { signOut } from 'next-auth/react';
-import { SafeUser } from '../../types';
 
 interface UserMenuProps {
-   currentUser: SafeUser | null | undefined;
+   currentUser?: SafeUser | null;
 }
 
 const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
    const router = useRouter();
 
-   const [isOpen, setIsOpen] = useState(false);
+   const loginModal = useLoginModal();
    const registerModal = useRegisterModal();
    const rentModal = useRentModal();
-   const loginModal = useLoginModal();
 
-   const menuRef = useRef<HTMLDivElement>(null);
+   const [isOpen, setIsOpen] = useState(false);
 
    const toggleOpen = useCallback(() => {
       setIsOpen((value) => !value);
@@ -33,63 +34,47 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
       if (!currentUser) {
          return loginModal.onOpen();
       }
+
       rentModal.onOpen();
-   }, [currentUser, loginModal, rentModal]);
-
-   useEffect(() => {
-      function handleClickOutside(event: MouseEvent) {
-         if (
-            menuRef.current &&
-            !menuRef.current.contains(event.target as Node)
-         ) {
-            setIsOpen(false);
-         }
-      }
-
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => {
-         document.removeEventListener('mousedown', handleClickOutside);
-      };
-   }, [menuRef]);
+   }, [loginModal, rentModal, currentUser]);
 
    return (
-      <div className='relative' ref={menuRef}>
-         <div className='flex flex-row items-center gap-2'>
+      <div className='relative'>
+         <div className='flex flex-row items-center gap-3'>
             <div
                onClick={onRent}
                className='
-                    hidden 
-                    md:block
-                    text-sm 
-                    font-semibold
-                    py-3
-                    px-4
-                    rounded-full
-                    hover:bg-neutral-100
-                    transition
-                    cursor-pointer
-                '
+            hidden
+            md:block
+            text-sm 
+            font-semibold 
+            py-3 
+            px-4 
+            rounded-full 
+            hover:bg-neutral-100 
+            transition 
+            cursor-pointer
+          '
             >
                Airbnb your home
             </div>
-
             <div
                onClick={toggleOpen}
                className='
-                    p-4
-                    md:py-1
-                    md:px-2
-                    border-[1px]
-                    border-neutral-200
-                    flex
-                    flex-row
-                    items-center
-                    gap-3
-                    rounded-full
-                    cursor-pointer
-                    hover:shadow-md
-                    transition
-                '
+          p-4
+          md:py-1
+          md:px-2
+          border-[1px] 
+          border-neutral-200 
+          flex 
+          flex-row 
+          items-center 
+          gap-3 
+          rounded-full 
+          cursor-pointer 
+          hover:shadow-md 
+          transition
+          '
             >
                <AiOutlineMenu />
                <div className='hidden md:block'>
@@ -97,83 +82,53 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
                </div>
             </div>
          </div>
-
          {isOpen && (
             <div
                className='
-                    absolute 
-                    rounded-xl 
-                    shadow-md
-                    w-[40vw]
-                    md:w-3/4
-                    bg-white
-                    overflow-hidden
-                    right-0
-                    top-12
-                    text-sm
-                '
+            absolute 
+            rounded-xl 
+            shadow-md
+            w-[40vw]
+            md:w-3/4 
+            bg-white 
+            overflow-hidden 
+            right-0 
+            top-12 
+            text-sm
+          '
             >
                <div className='flex flex-col cursor-pointer'>
                   {currentUser ? (
                      <>
                         <MenuItem
-                           onClick={() => {
-                              setIsOpen(false);
-                              router.push('/trips');
-                           }}
-                           label='Trips'
+                           label='My trips'
+                           onClick={() => router.push('/trips')}
                         />
                         <MenuItem
-                           onClick={() => {
-                              setIsOpen(false);
-                              router.push('/favorites');
-                           }}
-                           label='Favorites'
+                           label='My favorites'
+                           onClick={() => router.push('/favorites')}
                         />
                         <MenuItem
-                           onClick={() => {
-                              setIsOpen(false);
-                              router.push('/reservations');
-                           }}
-                           label='Reservations'
+                           label='My reservations'
+                           onClick={() => router.push('/reservations')}
                         />
                         <MenuItem
-                           onClick={() => {
-                              // registerModal.onOpen();
-                           }}
-                           label='Properties'
+                           label='My properties'
+                           onClick={() => router.push('/properties')}
                         />
                         <MenuItem
-                           onClick={() => {
-                              setIsOpen(false);
-                              rentModal.onOpen();
-                           }}
-                           label='Airbnb My Home'
+                           label='Airbnb your home'
+                           onClick={rentModal.onOpen}
                         />
                         <hr />
-                        <MenuItem
-                           onClick={() => {
-                              setIsOpen(false);
-                              signOut();
-                           }}
-                           label='Logout'
-                        />
+                        <MenuItem label='Logout' onClick={() => signOut()} />
                      </>
                   ) : (
                      <>
+                        <MenuItem label='Login' onClick={loginModal.onOpen} />
                         <MenuItem
-                           onClick={() => {
-                              loginModal.onOpen();
-                              toggleOpen();
-                           }}
-                           label='Login'
-                        />
-                        <MenuItem
-                           onClick={() => {
-                              registerModal.onOpen();
-                              toggleOpen();
-                           }}
-                           label='Sign Up'
+                           label='Sign up'
+                           onClick={registerModal.onOpen}
                         />
                      </>
                   )}
