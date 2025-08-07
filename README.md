@@ -4,7 +4,7 @@
 
 ## Prerequisites
 
-Node version 16.x
+Node version 22.x
 
 ## Install packages
 
